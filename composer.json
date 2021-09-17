@@ -1,0 +1,26 @@
+{
+    "name": "inchoo/module-product-faq",
+    "description": "N/A",
+    "type": "magento2-module",
+    "version": "1.0.0",
+    "require": {
+        "php": "~7.3.0||~7.4.0",
+        "magento/framework": "*"
+    },
+    "autoload": {
+        "files": [
+            "registration.php"
+        ],
+        "psr-4": {
+            "Inchoo\\ProductFaq\\": ""
+        }
+    },
+    "authors": [
+        {
+            "name": "Inchoo",
+            "email": "backend@inchoo.net",
+            "homepage": "https://inchoo.net/",
+            "role": "Developer"
+        }
+    ]
+}
