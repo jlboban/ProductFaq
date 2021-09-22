@@ -1,0 +1,43 @@
+<?php
+/** @var Magento\Framework\View\Element\Template $block */
+/** @var \Magento\Framework\Escaper $escaper */
+/** @var Inchoo\ProductFaq\ViewModel\ProductFaq $productFaqViewModel */
+$productFaqViewModel = $block->getData('product_faq');
+?>
+
+<h1><?= __('Frequently Asked Questions') ?></h1>
+<ol class="items">
+    <?php for ($i=0; $i<10; $i++): ?>
+    <li class="item">
+        <h3><?= $i . " " . "Placeholder Question" ?></h3>
+        <p style="padding-left: 1rem"><?= "Placeholder Answer" . $i ?></p>
+    </li>
+    <hr>
+    <?php endfor ?>
+</ol>
+<?php if($productFaqViewModel->isLoggedIn()) : ?>
+<form class="form" action="<?= $block->getUrl('faq/productFaq/create')?>" method="post" style="padding-top: 3rem">
+    <fieldset class="fieldset">
+        <legend class="legend">
+            <span><?= __('Submit a question') ?></span>
+        </legend>
+        <div class="field required">
+            <label for="question" class="label">
+                <span><?= __('Question') ?></span>
+            </label>
+            <div class="control">
+                <input type="text" id="question" name="question" class="input-text">
+            </div>
+        </div>
+        <input type="hidden" name="product_id" value="<?= $productFaqViewModel->getProductId() ?>"/>
+        <input type="hidden" name="customer_id" value="<?= $productFaqViewModel->getCustomerId() ?>"/>
+    </fieldset>
+    <div class="actions-toolbar">
+        <div class="primary">
+            <button type="submit" class="action submit primary" title="<?= __('Submit') ?>">
+                <span><?= __('Submit Question') ?></span>
+            </button>
+        </div>
+    </div>
+</form>
+<?php endif ?>
