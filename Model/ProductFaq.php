@@ -24,7 +24,7 @@ class ProductFaq extends AbstractModel implements ProductFaqInterface
     }
 
     /**
-     * @param mixed $entityId
+     * @param mixed|null $entityId
      * @return ProductFaq
      */
     public function setEntityId($entityId)
@@ -41,10 +41,10 @@ class ProductFaq extends AbstractModel implements ProductFaqInterface
     }
 
     /**
-     * @param int $productId
+     * @param mixed|null $productId
      * @return ProductFaq
      */
-    public function setProductId(int $productId)
+    public function setProductId($productId)
     {
         return $this->setData(ProductFaqInterface::PRODUCT_ID, $productId);
     }
@@ -58,10 +58,10 @@ class ProductFaq extends AbstractModel implements ProductFaqInterface
     }
 
     /**
-     * @param int $storeId
+     * @param mixed|null $storeId
      * @return ProductFaq
      */
-    public function setStoreId(int $storeId)
+    public function setStoreId($storeId)
     {
         return $this->setData(ProductFaqInterface::STORE_ID, $storeId);
     }
@@ -75,10 +75,10 @@ class ProductFaq extends AbstractModel implements ProductFaqInterface
     }
 
     /**
-     * @param int $customerId
+     * @param mixed|null $customerId
      * @return ProductFaq
      */
-    public function setCustomerId(int $customerId)
+    public function setCustomerId($customerId)
     {
         return $this->setData(ProductFaqInterface::CUSTOMER_ID, $customerId);
     }
@@ -93,10 +93,10 @@ class ProductFaq extends AbstractModel implements ProductFaqInterface
     }
 
     /**
-     * @param string $question
+     * @param mixed|null $question
      * @return ProductFaq
      */
-    public function setQuestion(string $question)
+    public function setQuestion($question)
     {
         return $this->setData(ProductFaqInterface::QUESTION, $question);
     }
@@ -110,10 +110,10 @@ class ProductFaq extends AbstractModel implements ProductFaqInterface
     }
 
     /**
-     * @param string $answer
+     * @param mixed|null $answer
      * @return ProductFaq
      */
-    public function setAnswer(string $answer)
+    public function setAnswer($answer)
     {
         return $this->setData(ProductFaqInterface::ENTITY_ID, $answer);
     }
@@ -127,10 +127,10 @@ class ProductFaq extends AbstractModel implements ProductFaqInterface
     }
 
     /**
-     * @param bool $isListed
+     * @param mixed|null $isListed
      * @return ProductFaq
      */
-    public function setIsListed(bool $isListed)
+    public function setIsListed($isListed)
     {
         return $this->setData(ProductFaqInterface::IS_LISTED, $isListed);
     }

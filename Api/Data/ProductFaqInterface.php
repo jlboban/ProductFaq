@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Inchoo\ProductFaq\Api\Data;
 
-interface ProductFaqInterface
+Interface ProductFaqInterface
 {
     public const ENTITY_ID = 'entity_id';
     public const PRODUCT_ID = 'product_id';
@@ -22,10 +22,10 @@ interface ProductFaqInterface
     public function getEntityId();
 
     /**
-     * @param int $entityId
+     * @param mixed $entityId
      * @return mixed
      */
-    public function setEntityId(int $entityId);
+    public function setEntityId($entityId);
 
     /**
      * @return mixed|null
@@ -33,10 +33,10 @@ interface ProductFaqInterface
     public function getProductId();
 
     /**
-     * @param int $productId
+     * @param mixed $productId
      * @return mixed
      */
-    public function setProductId(int $productId);
+    public function setProductId($productId);
 
     /**
      * @return mixed|null
@@ -45,10 +45,10 @@ interface ProductFaqInterface
 
 
     /**
-     * @param int $storeId
+     * @param mixed $storeId
      * @return mixed
      */
-    public function setStoreId(int $storeId);
+    public function setStoreId($storeId);
 
     /**
      * @return mixed|null
@@ -56,10 +56,10 @@ interface ProductFaqInterface
     public function getCustomerId();
 
     /**
-     * @param int $customerId
+     * @param mixed $customerId
      * @return mixed
      */
-    public function setCustomerId(int $customerId);
+    public function setCustomerId($customerId);
 
     /**
      * @return mixed|null
@@ -67,10 +67,10 @@ interface ProductFaqInterface
     public function getQuestion();
 
     /**
-     * @param string $question
+     * @param mixed $question
      * @return mixed
      */
-    public function setQuestion(string $question);
+    public function setQuestion($question);
 
     /**
      * @return mixed|null
@@ -78,10 +78,10 @@ interface ProductFaqInterface
     public function getAnswer();
 
     /**
-     * @param string $answer
+     * @param mixed $answer
      * @return mixed
      */
-    public function setAnswer(string $answer);
+    public function setAnswer($answer);
 
     /**
      * @return mixed|null
@@ -89,8 +89,8 @@ interface ProductFaqInterface
     public function getIsListed();
 
     /**
-     * @param bool $isListed
+     * @param mixed $isListed
      * @return mixed
      */
-    public function setIsListed(bool $isListed);
+    public function setIsListed($isListed);
 }

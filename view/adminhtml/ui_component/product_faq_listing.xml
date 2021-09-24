@@ -1,0 +1,80 @@
+<?xml version="1.0"?>
+
+<listing xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Ui:etc/ui_configuration.xsd">
+    <argument name="data" xsi:type="array">
+        <item name="js_config" xsi:type="array">
+            <item name="provider" xsi:type="string">product_faq_listing.productFaq_listing_data_source</item>
+        </item>
+    </argument>
+    <settings>
+        <spinner>product_faq_listing_columns</spinner>
+        <deps>
+            <dep>product_faq_listing.productFaq_listing_data_source</dep>
+        </deps>
+    </settings>
+    <dataSource name="productFaq_listing_data_source" component="Magento_Ui/js/grid/provider">
+        <settings>
+            <storageConfig>
+                <param name="indexField" xsi:type="string">entity_id</param>
+            </storageConfig>
+            <updateUrl path="mui/index/render"/>
+        </settings>
+        <aclResource>Magento_Backend::system_other_settings</aclResource>
+        <dataProvider class="Inchoo\ProductFaq\Ui\DataProvider\ProductFaqListingDataProvider" name="productFaq_listing_data_source">
+            <settings>
+                <requestFieldName>id</requestFieldName>
+                <primaryFieldName>entity_id</primaryFieldName>
+            </settings>
+        </dataProvider>
+    </dataSource>
+    <listingToolbar name="listing_top">
+        <bookmark name="bookmarks"/>
+        <columnsControls name="columns_controls"/>
+        <paging name="listing_paging"/>
+    </listingToolbar>
+    <columns name="product_faq_listing_columns">
+        <column name="entity_id" sortOrder="5">
+            <settings>
+                <filter>textRange</filter>
+                <label translate="true">ID</label>
+                <sorting>asc</sorting>
+            </settings>
+        </column>
+        <column name="is_listed" sortOrder="10">
+            <settings>
+                <label translate="true">Listed</label>
+            </settings>
+        </column>
+        <column name="question" sortOrder="15">
+            <settings>
+                <label translate="true">Question</label>
+            </settings>
+        </column>
+        <column name="answer" sortOrder="20">
+            <settings>
+                <label translate="true">Answer</label>
+            </settings>
+        </column>
+        <column name="created_at" sortOrder="25" class="Magento\Ui\Component\Listing\Columns\Date" component="Magento_Ui/js/grid/columns/date">
+            <settings>
+                <label translate="true">Created</label>
+                <dataType>date</dataType>
+                <resizeDefaultWidth>75</resizeDefaultWidth>
+            </settings>
+        </column>
+        <column name="updated_at" sortOrder="30" class="Magento\Ui\Component\Listing\Columns\Date" component="Magento_Ui/js/grid/columns/date">
+            <settings>
+                <label translate="true">Modified</label>
+                <dataType>date</dataType>
+                <resizeDefaultWidth>75</resizeDefaultWidth>
+            </settings>
+        </column>
+        <actionsColumn name="actions" sortOrder="150" class="Inchoo\ProductFaq\Ui\Component\Listing\Column\ProductFaqActions">
+            <settings>
+                <indexField>entity_id</indexField>
+                <resizeEnabled>false</resizeEnabled>
+                <resizeDefaultWidth>100</resizeDefaultWidth>
+            </settings>
+        </actionsColumn>
+    </columns>
+</listing>
