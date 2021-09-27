@@ -22,6 +22,7 @@ use Psr\Log\LoggerInterface;
 class Create implements HttpPostActionInterface
 {
     private const PRODUCT_FAQ_TAB_URL_SUFFIX = '#faq';
+    private const QUESTION_MIN_LENGTH = 16;
 
     /**
      * @var ResultFactory
@@ -113,17 +114,25 @@ class Create implements HttpPostActionInterface
         $data = $this->request->getParams();
         $storeId = $this->storeManager->getStore()->getId();
         $productId = $data['product_id'];
-
         $product = $this->productRepository->getById($productId, false, $storeId);
 
         $resultRedirect = $this->resultFactory->create(ResultFactory::TYPE_REDIRECT);
         $resultRedirect->setPath($product->getProductUrl() . self::PRODUCT_FAQ_TAB_URL_SUFFIX);
 
+        $question = $data['question'];
+        if (strlen($question) < self::QUESTION_MIN_LENGTH) {
+            $this->messageManager->addErrorMessage(
+                __("Please enter at least %1 characters", self::QUESTION_MIN_LENGTH)
+            );
+            
+            return $resultRedirect;
+        }
+
         $productFaq = $this->productFaqFactory->create();
+        $productFaq->setQuestion($question);
         $productFaq->setProductId($productId);
         $productFaq->setStoreId($storeId);
         $productFaq->setCustomerId($this->session->getCustomerId());
-        $productFaq->setQuestion($data['question']);
 
         try {
             $this->productFaqRepository->save($productFaq);
