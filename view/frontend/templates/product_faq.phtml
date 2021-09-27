@@ -6,15 +6,19 @@ $productFaqViewModel = $block->getData('product_faq');
 ?>
 
 <h1><?= __('Frequently Asked Questions') ?></h1>
+<?php if (count($productFaqViewModel->getProductQuestions())): ?>
 <ol class="items">
-    <?php for ($i=0; $i<10; $i++): ?>
+    <?php foreach ($productFaqViewModel->getProductQuestions() as $faq) : ?>
     <li class="item">
-        <h3><?= $i . " " . "Placeholder Question" ?></h3>
-        <p style="padding-left: 1rem"><?= "Placeholder Answer" . $i ?></p>
+        <h3><?= __('Q: ') . $faq->getQuestion() ?></h3>
+        <p style="padding-left: 1rem"><?= __('A: ') . $faq->getAnswer() ?></p>
     </li>
     <hr>
-    <?php endfor ?>
+    <?php endforeach ?>
 </ol>
+<?php else : ?>
+<div class="message info empty"><span><?= $escaper->escapeHtml(__('There are no submitted questions for this product.')) ?></span></div>
+<?php endif ?>
 <?php if($productFaqViewModel->isLoggedIn()) : ?>
 <form class="form" action="<?= $block->getUrl('faq/productFaq/create')?>" method="post" style="padding-top: 3rem">
     <fieldset class="fieldset">
@@ -30,7 +34,6 @@ $productFaqViewModel = $block->getData('product_faq');
             </div>
         </div>
         <input type="hidden" name="product_id" value="<?= $productFaqViewModel->getProductId() ?>"/>
-        <input type="hidden" name="customer_id" value="<?= $productFaqViewModel->getCustomerId() ?>"/>
     </fieldset>
     <div class="actions-toolbar">
         <div class="primary">

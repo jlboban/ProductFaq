@@ -7,6 +7,7 @@ namespace Inchoo\ProductFaq\Controller\ProductFaq;
 use Inchoo\ProductFaq\Api\ProductFaqRepositoryInterface;
 use Inchoo\ProductFaq\Model\ProductFaqFactory;
 use Magento\Catalog\Api\ProductRepositoryInterface;
+use Magento\Customer\Model\Session;
 use Magento\Framework\App\Action\HttpPostActionInterface;
 use Magento\Framework\App\RequestInterface;
 use Magento\Framework\Controller\Result\Redirect;
@@ -63,6 +64,11 @@ class Create implements HttpPostActionInterface
     protected $logger;
 
     /**
+     * @var Session
+     */
+    protected $session;
+
+    /**
      * Create constructor.
      * @param ResultFactory $resultFactory
      * @param ManagerInterface $messageManager
@@ -72,6 +78,7 @@ class Create implements HttpPostActionInterface
      * @param StoreManager $storeManager
      * @param ProductRepositoryInterface $productRepository
      * @param LoggerInterface $logger
+     * @param Session $session
      */
     public function __construct(
         ResultFactory                 $resultFactory,
@@ -81,7 +88,8 @@ class Create implements HttpPostActionInterface
         ProductFaqRepositoryInterface $productFaqRepository,
         StoreManager                  $storeManager,
         ProductRepositoryInterface    $productRepository,
-        LoggerInterface               $logger
+        LoggerInterface               $logger,
+        Session                       $session
     )
     {
         $this->resultFactory = $resultFactory;
@@ -92,6 +100,7 @@ class Create implements HttpPostActionInterface
         $this->storeManager = $storeManager;
         $this->productRepository = $productRepository;
         $this->logger = $logger;
+        $this->session = $session;
     }
 
     /**
@@ -100,6 +109,8 @@ class Create implements HttpPostActionInterface
      */
     public function execute()
     {
+        $this->session->authenticate();
+
         $data = $this->request->getParams();
         $storeId = $this->storeManager->getStore()->getId();
         $productId = $data['product_id'];
@@ -112,7 +123,7 @@ class Create implements HttpPostActionInterface
         $productFaq = $this->productFaqFactory->create();
         $productFaq->setProductId($productId);
         $productFaq->setStoreId($storeId);
-        $productFaq->setCustomerId($data['customer_id']);
+        $productFaq->setCustomerId($this->session->getCustomerId());
         $productFaq->setQuestion($data['question']);
 
         try {

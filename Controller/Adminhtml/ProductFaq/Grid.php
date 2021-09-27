@@ -5,10 +5,8 @@ declare(strict_types=1);
 namespace Inchoo\ProductFaq\Controller\Adminhtml\ProductFaq;
 
 use Magento\Backend\App\Action;
-use Magento\Backend\Model\View\Result\Page;
 use Magento\Framework\App\Action\HttpGetActionInterface;
 use Magento\Framework\Controller\ResultFactory;
-use Magento\Framework\Controller\ResultInterface;
 
 class Grid extends Action implements HttpGetActionInterface
 {

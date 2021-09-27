@@ -1,0 +1,51 @@
+<?php
+
+/**
+ * @var \Magento\Framework\View\Element\Template $block
+ * @var \Magento\Framework\Escaper $escaper
+ * @var \Magento\Framework\View\Helper\SecureHtmlRenderer $secureRenderer
+ */
+
+$customerProductFaqViewModel = $block->getData('customer_product_faq');
+?>
+<?php if ($customerProductFaqViewModel->getCustomerQuestions()): ?>
+    <div class="table-wrapper product-faqs">
+        <table class="data table table-reviews" id="my-product-faqs-table">
+            <caption class="table-caption"><?= $escaper->escapeHtml(__('Product FAQs')) ?></caption>
+            <thead>
+            <tr>
+                <th scope="col" class="col date"><?= $escaper->escapeHtml(__('Created')) ?></th>
+                <th scope="col" class="col"><?= $escaper->escapeHtml(__('Listed')) ?></th>
+                <th scope="col" class="col summary"><?= $escaper->escapeHtml(__('Question')) ?></th>
+                <th scope="col" class="col summary"><?= $escaper->escapeHtml(__('Answer')) ?></th>
+                <th scope="col" class="col summary"><?= $escaper->escapeHtml(__('Product')) ?></th>
+            </tr>
+            </thead>
+            <tbody>
+            <?php foreach ($customerProductFaqViewModel->getCustomerQuestions() as $faq): ?>
+                <tr>
+                    <td data-th="<?= $escaper->escapeHtml(__('Created')) ?>" class="col date">
+                        <?= $escaper->escapeHtml($faq->getCreatedAt()) ?>
+                    </td>
+                    <td data-th="<?= $escaper->escapeHtml(__('Listed')) ?>" class="col summary">
+                        <?= $escaper->escapeHtml($faq->getIsListed() ? __('Listed') : __('Unlisted')) ?>
+                    </td>
+                    <td data-th="<?= $escaper->escapeHtmlAttr(__('Question')) ?>" class="col summary">
+                        <?= $faq->getQuestion() ?>
+                    </td>
+                    <td data-th="<?= $escaper->escapeHtmlAttr(__('Answer')) ?>" class="col summary">
+                        <?= $faq->getAnswer() ?>
+                    </td>
+                    <td data-th="<?= $escaper->escapeHtmlAttr(__('Product URL')) ?>" class="col summary">
+                        <a href="<?= $escaper->escapeHtml($customerProductFaqViewModel->getProductUrl($faq->getData('product_id'))) ?>">
+                            <?= $escaper->escapeHtml($customerProductFaqViewModel->getProductName($faq->getData('product_id'))) ?>
+                        </a>
+                    </td>
+                </tr>
+            <?php endforeach; ?>
+            </tbody>
+        </table>
+    </div>
+<?php else: ?>
+    <div class="message info empty"><span><?= $escaper->escapeHtml(__('You have submitted no product FAQs.')) ?></span></div>
+<?php endif; ?>
