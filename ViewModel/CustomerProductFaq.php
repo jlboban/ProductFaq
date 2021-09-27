@@ -86,7 +86,7 @@ class CustomerProductFaq implements ArgumentInterface
     public function getProductUrl(int $productId): ?string
     {
         $product = $this->productRepository->getById($productId);
-        return $product->getUrlKey() ? $this->storeManager->getStore()->getBaseUrl() . $product->getUrlKey() . '.html' : null;
+        return $product->getProductUrl();
     }
 
     /**

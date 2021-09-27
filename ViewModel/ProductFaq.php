@@ -69,6 +69,10 @@ class ProductFaq implements ArgumentInterface
         return $this->request->getParam('id');
     }
 
+    /**
+     * @return Collection
+     * @throws \Magento\Framework\Exception\NoSuchEntityException
+     */
     public function getProductQuestions(): Collection
     {
         $storeId = $this->storeManager->getStore()->getId();

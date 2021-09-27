@@ -10,6 +10,10 @@ use Magento\Framework\Model\AbstractModel;
 
 class ProductFaq extends AbstractModel implements ProductFaqInterface
 {
+    /**
+     * Inchoo\ProductFaq\Model\ProductFaq constructor.
+     * @return void
+     */
     protected function _construct()
     {
         $this->_init(ResourceModel::class);
@@ -82,7 +86,6 @@ class ProductFaq extends AbstractModel implements ProductFaqInterface
     {
         return $this->setData(ProductFaqInterface::CUSTOMER_ID, $customerId);
     }
-
 
     /**
      * @return mixed|null

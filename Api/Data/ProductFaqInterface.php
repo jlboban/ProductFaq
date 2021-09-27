@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Inchoo\ProductFaq\Api\Data;
 
-Interface ProductFaqInterface
+interface ProductFaqInterface
 {
     public const ENTITY_ID = 'entity_id';
     public const PRODUCT_ID = 'product_id';
@@ -42,7 +42,6 @@ Interface ProductFaqInterface
      * @return mixed|null
      */
     public function getStoreId();
-
 
     /**
      * @param mixed $storeId

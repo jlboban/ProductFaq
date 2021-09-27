@@ -90,8 +90,7 @@ class Create implements HttpPostActionInterface
         ProductRepositoryInterface    $productRepository,
         LoggerInterface               $logger,
         Session                       $session
-    )
-    {
+    ) {
         $this->resultFactory = $resultFactory;
         $this->messageManager = $messageManager;
         $this->request = $request;
@@ -133,11 +132,10 @@ class Create implements HttpPostActionInterface
             $this->messageManager->addErrorMessage(__('That question has already been submitted for this product.'));
         } catch (\Exception $e) {
             $this->logger->error('Tried to create a new product FAQ', [
-                    'productName' => $product->getName(),
-                    'question' => $data['question'],
-                    'exception' => $e->getMessage()
-                ]
-            );
+                'productName' => $product->getName(),
+                'question' => $data['question'],
+                'exception' => $e->getMessage()
+            ]);
 
             $this->messageManager->addErrorMessage(__('Something went wrong, please try again or contact support.'));
         }

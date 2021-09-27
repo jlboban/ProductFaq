@@ -96,7 +96,7 @@ class Save extends Action implements HttpPostActionInterface
      */
     protected function isDataValid(): bool
     {
-        if (!$this->getRequest()->getParam('question')){
+        if (!$this->getRequest()->getParam('question')) {
             return false;
         }
 

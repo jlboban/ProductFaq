@@ -1,44 +1,44 @@
 <?php
 /** @var Magento\Framework\View\Element\Template $block */
-/** @var \Magento\Framework\Escaper $escaper */
 /** @var Inchoo\ProductFaq\ViewModel\ProductFaq $productFaqViewModel */
 $productFaqViewModel = $block->getData('product_faq');
 ?>
 
-<h1><?= __('Frequently Asked Questions') ?></h1>
-<?php if (count($productFaqViewModel->getProductQuestions())): ?>
+<h1><?= $block->escapeHtml(__('Frequently Asked Questions')) ?></h1>
+<?php $faqCollection = $productFaqViewModel->getProductQuestions() ?>
+<?php if ($faqCollection->getSize() > 0) : ?>
 <ol class="items">
-    <?php foreach ($productFaqViewModel->getProductQuestions() as $faq) : ?>
+    <?php foreach ($faqCollection as $faq) : ?>
     <li class="item">
-        <h3><?= __('Q: ') . $faq->getQuestion() ?></h3>
-        <p style="padding-left: 1rem"><?= __('A: ') . $faq->getAnswer() ?></p>
+        <h3><?= $block->escapeHtml(__('Question: ') . $faq->getQuestion()) ?></h3>
+        <p style="padding-left: 1rem"><?= $block->escapeHtml(__('Answer: ') . $faq->getAnswer()) ?></p>
     </li>
     <hr>
     <?php endforeach ?>
 </ol>
 <?php else : ?>
-<div class="message info empty"><span><?= $escaper->escapeHtml(__('There are no submitted questions for this product.')) ?></span></div>
+<div class="message info empty"><span><?= $block->escapeHtml(__('There are no submitted questions for this product.')) ?></span></div>
 <?php endif ?>
-<?php if($productFaqViewModel->isLoggedIn()) : ?>
-<form class="form" action="<?= $block->getUrl('faq/productFaq/create')?>" method="post" style="padding-top: 3rem">
+<?php if ($productFaqViewModel->isLoggedIn()) : ?>
+<form class="form" action="<?= $block->escapeUrl($block->getUrl('faq/productFaq/create')) ?>" method="post" style="padding-top: 3rem">
     <fieldset class="fieldset">
         <legend class="legend">
-            <span><?= __('Submit a question') ?></span>
+            <span><?= $block->escapeHtml(__('Submit a question')) ?></span>
         </legend>
         <div class="field required">
             <label for="question" class="label">
-                <span><?= __('Question') ?></span>
+                <span><?= $block->escapeHtml(__('Question')) ?></span>
             </label>
             <div class="control">
                 <input type="text" id="question" name="question" class="input-text">
             </div>
         </div>
-        <input type="hidden" name="product_id" value="<?= $productFaqViewModel->getProductId() ?>"/>
+        <input type="hidden" name="product_id" value="<?= $block->escapeHtml($productFaqViewModel->getProductId()) ?>"/>
     </fieldset>
     <div class="actions-toolbar">
         <div class="primary">
-            <button type="submit" class="action submit primary" title="<?= __('Submit') ?>">
-                <span><?= __('Submit Question') ?></span>
+            <button type="submit" class="action submit primary" title="<?= $block->escapeHtml(__('Submit')) ?>">
+                <span><?= $block->escapeHtml(__('Submit Question')) ?></span>
             </button>
         </div>
     </div>

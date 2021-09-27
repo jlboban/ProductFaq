@@ -21,6 +21,11 @@ class Index implements HttpGetActionInterface
      */
     protected $session;
 
+    /**
+     * Index constructor.
+     * @param ResultFactory $resultFactory
+     * @param Session $session
+     */
     public function __construct(ResultFactory $resultFactory, Session $session)
     {
         $this->resultFactory = $resultFactory;
