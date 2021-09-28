@@ -14,6 +14,7 @@ use Magento\Framework\Controller\Result\ForwardFactory;
 use Magento\Framework\Controller\Result\Redirect;
 use Magento\Framework\Controller\ResultFactory;
 use Magento\Framework\Controller\ResultInterface;
+use Magento\Framework\Event\ManagerInterface as EventManager;
 use Magento\Framework\Exception\CouldNotSaveException;
 use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Framework\Message\ManagerInterface;
@@ -76,6 +77,11 @@ class Create implements HttpPostActionInterface
     protected $session;
 
     /**
+     * @var EventManager
+     */
+    protected $eventManager;
+
+    /**
      * Create constructor.
      * @param ResultFactory $resultFactory
      * @param ForwardFactory $forwardFactory
@@ -87,6 +93,7 @@ class Create implements HttpPostActionInterface
      * @param ProductRepositoryInterface $productRepository
      * @param LoggerInterface $logger
      * @param Session $session
+     * @param EventManager $eventManager
      */
     public function __construct(
         ResultFactory $resultFactory,
@@ -98,7 +105,8 @@ class Create implements HttpPostActionInterface
         StoreManager $storeManager,
         ProductRepositoryInterface $productRepository,
         LoggerInterface $logger,
-        Session $session
+        Session $session,
+        EventManager $eventManager
     ) {
         $this->resultFactory = $resultFactory;
         $this->forwardFactory = $forwardFactory;
@@ -110,6 +118,7 @@ class Create implements HttpPostActionInterface
         $this->productRepository = $productRepository;
         $this->logger = $logger;
         $this->session = $session;
+        $this->eventManager = $eventManager;
     }
 
     /**
@@ -146,6 +155,8 @@ class Create implements HttpPostActionInterface
         $productFaq->setProductId($data['product_id']);
         $productFaq->setStoreId($storeId);
         $productFaq->setCustomerId($this->session->getCustomerId());
+
+        $this->eventManager->dispatch('create_productFaq', ['productFaq' => $productFaq]);
 
         try {
             $this->productFaqRepository->save($productFaq);
