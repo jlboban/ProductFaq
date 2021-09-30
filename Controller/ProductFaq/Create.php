@@ -7,7 +7,8 @@ namespace Inchoo\ProductFaq\Controller\ProductFaq;
 use Inchoo\ProductFaq\Api\ProductFaqRepositoryInterface;
 use Inchoo\ProductFaq\Model\ProductFaqFactory;
 use Magento\Catalog\Api\ProductRepositoryInterface;
-use Magento\Customer\Model\Session;
+use Magento\Customer\Model\Session as CustomerSession;
+use Magento\Customer\Model\Url as CustomerUrl;
 use Magento\Framework\App\Action\HttpPostActionInterface;
 use Magento\Framework\App\RequestInterface;
 use Magento\Framework\Controller\Result\ForwardFactory;
@@ -72,14 +73,19 @@ class Create implements HttpPostActionInterface
     protected $logger;
 
     /**
-     * @var Session
+     * @var CustomerSession
      */
-    protected $session;
+    protected $customerSession;
 
     /**
      * @var EventManager
      */
     protected $eventManager;
+
+    /**
+     * @var Url
+     */
+    protected $customerUrl;
 
     /**
      * Create constructor.
@@ -92,7 +98,7 @@ class Create implements HttpPostActionInterface
      * @param StoreManager $storeManager
      * @param ProductRepositoryInterface $productRepository
      * @param LoggerInterface $logger
-     * @param Session $session
+     * @param CustomerSession $session
      * @param EventManager $eventManager
      */
     public function __construct(
@@ -105,8 +111,9 @@ class Create implements HttpPostActionInterface
         StoreManager $storeManager,
         ProductRepositoryInterface $productRepository,
         LoggerInterface $logger,
-        Session $session,
-        EventManager $eventManager
+        CustomerSession $session,
+        EventManager $eventManager,
+        CustomerUrl $customerUrl
     ) {
         $this->resultFactory = $resultFactory;
         $this->forwardFactory = $forwardFactory;
@@ -119,6 +126,7 @@ class Create implements HttpPostActionInterface
         $this->logger = $logger;
         $this->session = $session;
         $this->eventManager = $eventManager;
+        $this->customerUrl = $customerUrl;
     }
 
     /**
@@ -127,22 +135,26 @@ class Create implements HttpPostActionInterface
      */
     public function execute()
     {
-        $this->session->authenticate();
+        /** @var Redirect $resultRedirect */
+        $resultRedirect = $this->resultFactory->create(ResultFactory::TYPE_REDIRECT);
+
+        if (!$this->session->authenticate()) {
+            $resultRedirect->setPath($this->customerUrl->getLoginUrl());
+            return $resultRedirect;
+        }
 
         $data = $this->request->getParams();
-        $storeId = $this->storeManager->getStore()->getId();
 
         try {
-            $product = $this->productRepository->getById($data['product_id'], false, $storeId);
+            $product = $this->productRepository->getById($data['product_id']);
         } catch (NoSuchEntityException $e) {
             $this->messageManager->addErrorMessage(__('Product was not found.'));
             return $this->forwardFactory->create()->forward('noroute');
         }
 
-        $resultRedirect = $this->resultFactory->create(ResultFactory::TYPE_REDIRECT);
         $resultRedirect->setPath($product->getProductUrl() . self::PRODUCT_FAQ_TAB_URL_SUFFIX);
 
-        if (strlen($data['question']) < self::QUESTION_MIN_LENGTH) {
+        if (mb_strlen($data['question']) < self::QUESTION_MIN_LENGTH || empty($data['question'])) {
             $this->messageManager->addErrorMessage(
                 __("Please enter at least %1 characters", self::QUESTION_MIN_LENGTH)
             );
@@ -153,7 +165,7 @@ class Create implements HttpPostActionInterface
         $productFaq = $this->productFaqFactory->create();
         $productFaq->setQuestion($data['question']);
         $productFaq->setProductId($data['product_id']);
-        $productFaq->setStoreId($storeId);
+        $productFaq->setStoreId($this->storeManager->getStore()->getId());
         $productFaq->setCustomerId($this->session->getCustomerId());
 
         $this->eventManager->dispatch('create_productFaq', ['productFaq' => $productFaq]);

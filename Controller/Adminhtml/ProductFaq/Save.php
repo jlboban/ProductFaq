@@ -83,12 +83,13 @@ class Save extends Action implements HttpPostActionInterface
 
         try {
             $this->productFaqRepository->save($productFaq);
+            $this->messageManager->addSuccessMessage(__('Successfully saved FAQ!'));
         } catch (\Magento\Framework\Exception\CouldNotSaveException $e) {
             $this->dataPersistor->set('inchoo_productFaq', $request->getParams());
             $this->messageManager->addExceptionMessage($e);
         }
 
-        return $resultRedirect->setPath('*/*/edit', ['id' => $productFaq->getEntityId()]);
+        return $resultRedirect->setPath('*/*/grid');
     }
 
     /**

@@ -4,11 +4,11 @@
     <table name="inchoo_product_faq" resource="default" engine="innodb" comment="Frequently asked product questions table">
         <column xsi:type="int" name="entity_id" padding="10" unsigned="true" nullable="false" identity="true" comment="Entity ID"/>
         <column xsi:type="int" name="product_id" nullable="false" comment="Product ID"/>
-        <column xsi:type="int" name="store_id" nullable="true" comment="Store ID"/>
-        <column xsi:type="int" name="customer_id" nullable="true" comment="Customer ID"/>
-        <column xsi:type="varchar" name="question" nullable="true" length="255" comment="Question"/>
+        <column xsi:type="int" name="store_id" nullable="false" comment="Store ID"/>
+        <column xsi:type="int" name="customer_id" nullable="false" comment="Customer ID"/>
+        <column xsi:type="varchar" name="question" nullable="false" length="255" comment="Question"/>
         <column xsi:type="mediumtext" name="answer" nullable="true" comment="Answer"/>
-        <column xsi:type="tinyint" name="is_listed" nullable="true" comment="Display on frontend flag"/>
+        <column xsi:type="boolean" name="is_listed" nullable="false" default="0" comment="Display on frontend flag"/>
         <column xsi:type="timestamp" name="created_at" on_update="false" nullable="false" default="CURRENT_TIMESTAMP"
                 comment="Created at"/>
         <column xsi:type="timestamp" name="updated_at" on_update="true" nullable="false" default="CURRENT_TIMESTAMP"

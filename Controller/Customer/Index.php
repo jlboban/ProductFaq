@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Inchoo\ProductFaq\Controller\Customer;
 
-use Magento\Customer\Model\Session;
+use Magento\Customer\Model\Session as CustomerSession;
 use Magento\Framework\App\Action\HttpGetActionInterface;
 use Magento\Framework\Controller\ResultFactory;
 use Magento\Framework\View\Result\Page;
@@ -17,19 +17,19 @@ class Index implements HttpGetActionInterface
     protected $resultFactory;
 
     /**
-     * @var Session
+     * @var CustomerSession
      */
-    protected $session;
+    protected $customerSession;
 
     /**
      * Index constructor.
      * @param ResultFactory $resultFactory
-     * @param Session $session
+     * @param CustomerSession $customerSession
      */
-    public function __construct(ResultFactory $resultFactory, Session $session)
+    public function __construct(ResultFactory $resultFactory, CustomerSession $customerSession)
     {
         $this->resultFactory = $resultFactory;
-        $this->session = $session;
+        $this->customerSession = $customerSession;
     }
 
     /**
@@ -39,7 +39,7 @@ class Index implements HttpGetActionInterface
      */
     public function execute()
     {
-        $this->session->authenticate();
+        $this->customerSession->authenticate();
 
         /** @var Page $resultPage */
         $resultPage = $this->resultFactory->create(ResultFactory::TYPE_PAGE);

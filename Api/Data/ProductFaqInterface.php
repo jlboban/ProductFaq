@@ -22,10 +22,10 @@ interface ProductFaqInterface
     public function getEntityId();
 
     /**
-     * @param mixed $entityId
+     * @param int|null $entityId
      * @return mixed
      */
-    public function setEntityId($entityId);
+    public function setEntityId(?int $entityId);
 
     /**
      * @return mixed|null
@@ -33,10 +33,10 @@ interface ProductFaqInterface
     public function getProductId();
 
     /**
-     * @param mixed $productId
+     * @param int|null $productId
      * @return mixed
      */
-    public function setProductId($productId);
+    public function setProductId(?int $productId);
 
     /**
      * @return mixed|null
@@ -44,10 +44,10 @@ interface ProductFaqInterface
     public function getStoreId();
 
     /**
-     * @param mixed $storeId
+     * @param int|null $storeId
      * @return mixed
      */
-    public function setStoreId($storeId);
+    public function setStoreId(?int $storeId);
 
     /**
      * @return mixed|null
@@ -55,10 +55,10 @@ interface ProductFaqInterface
     public function getCustomerId();
 
     /**
-     * @param mixed $customerId
+     * @param int|null $customerId
      * @return mixed
      */
-    public function setCustomerId($customerId);
+    public function setCustomerId(?int $customerId);
 
     /**
      * @return mixed|null
@@ -66,10 +66,10 @@ interface ProductFaqInterface
     public function getQuestion();
 
     /**
-     * @param mixed $question
+     * @param string|null $question
      * @return mixed
      */
-    public function setQuestion($question);
+    public function setQuestion(?string $question);
 
     /**
      * @return mixed|null
@@ -77,10 +77,10 @@ interface ProductFaqInterface
     public function getAnswer();
 
     /**
-     * @param mixed $answer
+     * @param string|null $answer
      * @return mixed
      */
-    public function setAnswer($answer);
+    public function setAnswer(?string $answer);
 
     /**
      * @return mixed|null
@@ -88,8 +88,18 @@ interface ProductFaqInterface
     public function getIsListed();
 
     /**
-     * @param mixed $isListed
+     * @param bool $isListed
      * @return mixed
      */
-    public function setIsListed($isListed);
+    public function setIsListed(bool $isListed);
+
+    /**
+     * @return mixed
+     */
+    public function getCreatedAt();
+
+    /**
+     * @return mixed
+     */
+    public function getUpdatedAt();
 }

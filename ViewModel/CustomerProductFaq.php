@@ -5,11 +5,11 @@ declare(strict_types=1);
 namespace Inchoo\ProductFaq\ViewModel;
 
 use Inchoo\ProductFaq\Api\Data\ProductFaqInterface;
-use Inchoo\ProductFaq\Model\ResourceModel\ProductFaq\Collection;
 use Inchoo\ProductFaq\Model\ResourceModel\ProductFaq\CollectionFactory;
 use Magento\Catalog\Model\ProductRepository;
 use Magento\Customer\Model\Session;
 use Magento\Framework\App\RequestInterface;
+use Magento\Framework\DataObject;
 use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Framework\View\Element\Block\ArgumentInterface;
 use Magento\Store\Model\StoreManager;
@@ -50,10 +50,10 @@ class CustomerProductFaq implements ArgumentInterface
      * @param ProductRepository $productRepository
      */
     public function __construct(
-        RequestInterface $request,
-        Session $session,
+        RequestInterface  $request,
+        Session           $session,
         CollectionFactory $productFaqCollectionFactory,
-        StoreManager $storeManager,
+        StoreManager      $storeManager,
         ProductRepository $productRepository
     ) {
         $this->request = $request;
@@ -64,10 +64,10 @@ class CustomerProductFaq implements ArgumentInterface
     }
 
     /**
-     * @return Collection
+     * @return DataObject[]
      * @throws NoSuchEntityException
      */
-    public function getCustomerQuestions(): Collection
+    public function getCustomerQuestions(): array
     {
         $storeId = $this->storeManager->getStore()->getId();
 
@@ -75,7 +75,7 @@ class CustomerProductFaq implements ArgumentInterface
         $collection->addFieldToFilter(ProductFaqInterface::STORE_ID, $storeId);
         $collection->addFieldToFilter(ProductFaqInterface::CUSTOMER_ID, $this->session->getCustomerId());
 
-        return $collection;
+        return $collection->getItems();
     }
 
     /**

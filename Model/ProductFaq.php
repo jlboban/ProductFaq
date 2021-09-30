@@ -6,9 +6,10 @@ namespace Inchoo\ProductFaq\Model;
 
 use Inchoo\ProductFaq\Api\Data\ProductFaqInterface;
 use Inchoo\ProductFaq\Model\ResourceModel\ProductFaq as ResourceModel;
+use Magento\Framework\DataObject\IdentityInterface;
 use Magento\Framework\Model\AbstractModel;
 
-class ProductFaq extends AbstractModel implements ProductFaqInterface
+class ProductFaq extends AbstractModel implements ProductFaqInterface, IdentityInterface
 {
     /**
      * Inchoo\ProductFaq\Model\ProductFaq constructor.
@@ -136,5 +137,31 @@ class ProductFaq extends AbstractModel implements ProductFaqInterface
     public function setIsListed($isListed)
     {
         return $this->setData(ProductFaqInterface::IS_LISTED, $isListed);
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getCreatedAt()
+    {
+        return $this->_getData(ProductFaqInterface::CREATED_AT);
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getUpdatedAt()
+    {
+        return $this->_getData(ProductFaqInterface::UPDATED_AT);
+    }
+
+    /**
+     * Return unique ID(s) for each object in system
+     *
+     * @return string[]
+     */
+    public function getIdentities()
+    {
+        // TODO: Implement getIdentities() method.
     }
 }

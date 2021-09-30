@@ -2,31 +2,32 @@
 
 /**
  * @var \Magento\Framework\View\Element\Template $block
- * @var \Magento\Framework\View\Helper\SecureHtmlRenderer $secureRenderer
  */
 
+/** @var \Inchoo\ProductFaq\ViewModel\CustomerProductFaq $customerProductFaqViewModel */
 $customerProductFaqViewModel = $block->getData('customer_product_faq');
 ?>
-<?php if ($customerProductFaqViewModel->getCustomerQuestions()) : ?>
+<?php $questions = $customerProductFaqViewModel->getCustomerQuestions() ?>
+<?php if (!empty($questions)) : ?>
     <div class="table-wrapper product-faqs">
         <table class="data table table-reviews" id="my-product-faqs-table">
             <caption class="table-caption"><?= $block->escapeHtml(__('Product FAQs')) ?></caption>
-            <thead>
-            <tr>
-                <th scope="col" class="col date"><?= $block->escapeHtml(__('Created')) ?></th>
-                <th scope="col" class="col"><?= $block->escapeHtml(__('Listed')) ?></th>
-                <th scope="col" class="col summary"><?= $block->escapeHtml(__('Question')) ?></th>
-                <th scope="col" class="col summary"><?= $block->escapeHtml(__('Answer')) ?></th>
-                <th scope="col" class="col summary"><?= $block->escapeHtml(__('Product')) ?></th>
-            </tr>
-            </thead>
+                <thead>
+                    <tr>
+                        <th scope="col" class="col date"><?= $block->escapeHtml(__('Created')) ?></th>
+                        <th scope="col" class="col"><?= $block->escapeHtml(__('Listed')) ?></th>
+                        <th scope="col" class="col summary"><?= $block->escapeHtml(__('Question')) ?></th>
+                        <th scope="col" class="col summary"><?= $block->escapeHtml(__('Answer')) ?></th>
+                        <th scope="col" class="col summary"><?= $block->escapeHtml(__('Product')) ?></th>
+                    </tr>
+                </thead>
             <tbody>
-            <?php foreach ($customerProductFaqViewModel->getCustomerQuestions() as $faq) : ?>
+            <?php foreach ($questions as $faq) : ?>
                 <tr>
-                    <td data-th="<?= $block->escapeHtml(__('Created')) ?>" class="col date">
+                    <td data-th="<?= $block->escapeHtmlAttr(__('Created')) ?>" class="col date">
                         <?= $block->escapeHtml($faq->getCreatedAt()) ?>
                     </td>
-                    <td data-th="<?= $block->escapeHtml(__('Listed')) ?>" class="col summary">
+                    <td data-th="<?= $block->escapeHtmlAttr(__('Listed')) ?>" class="col">
                         <?= $block->escapeHtml($faq->getIsListed() ? __('Listed') : __('Unlisted')) ?>
                     </td>
                     <td data-th="<?= $block->escapeHtmlAttr(__('Question')) ?>" class="col summary">
@@ -36,8 +37,8 @@ $customerProductFaqViewModel = $block->getData('customer_product_faq');
                         <?= $block->escapeHtml($faq->getAnswer()) ?>
                     </td>
                     <td data-th="<?= $block->escapeHtmlAttr(__('Product URL')) ?>" class="col summary">
-                        <a href="<?= $block->escapeHtml($customerProductFaqViewModel->getProductUrl($faq->getData('product_id'))) ?>">
-                            <?= $block->escapeHtml($customerProductFaqViewModel->getProductName($faq->getData('product_id'))) ?>
+                        <a href="<?= $block->escapeUrl($customerProductFaqViewModel->getProductUrl($faq->getProductId())) ?>">
+                            <?= $block->escapeHtml($customerProductFaqViewModel->getProductName($faq->getProductId())) ?>
                         </a>
                     </td>
                 </tr>
