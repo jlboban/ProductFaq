@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Inchoo\ProductFaq\Model;
 
 use Magento\Framework\App\Config\ScopeConfigInterface;
+use Magento\Store\Model\ScopeInterface;
 
 class Config
 {
@@ -24,10 +25,10 @@ class Config
     }
 
     /**
-     * @return mixed
+     * @return bool
      */
-    public function getProductFaqActive()
+    public function getProductFaqActive(): bool
     {
-        return $this->config->getValue(self::PRODUCT_FAQ_ACTIVE);
+        return $this->config->isSetFlag(self::PRODUCT_FAQ_ACTIVE, ScopeInterface::SCOPE_STORES);
     }
 }

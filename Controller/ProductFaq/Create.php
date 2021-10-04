@@ -9,7 +9,6 @@ use Inchoo\ProductFaq\Model\Config;
 use Inchoo\ProductFaq\Model\ProductFaqFactory;
 use Magento\Catalog\Api\ProductRepositoryInterface;
 use Magento\Customer\Model\Session;
-use Magento\Customer\Model\Session\Proxy;
 use Magento\Customer\Model\Url as CustomerUrl;
 use Magento\Framework\App\Action\HttpPostActionInterface;
 use Magento\Framework\App\RequestInterface;
@@ -169,7 +168,8 @@ class Create implements HttpPostActionInterface
 
         $resultRedirect->setPath($product->getProductUrl() . self::PRODUCT_FAQ_TAB_URL_SUFFIX);
 
-        if (mb_strlen($data['question']) < self::QUESTION_MIN_LENGTH || empty($data['question'])) {
+        $question = trim($this->request->getParam('question', ''));
+        if (mb_strlen($question) < self::QUESTION_MIN_LENGTH) {
             $this->messageManager->addErrorMessage(
                 __("Please enter at least %1 characters", self::QUESTION_MIN_LENGTH)
             );

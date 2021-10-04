@@ -7,9 +7,8 @@ namespace Inchoo\ProductFaq\ViewModel;
 use Inchoo\ProductFaq\Api\Data\ProductFaqInterface;
 use Inchoo\ProductFaq\Model\ResourceModel\ProductFaq\CollectionFactory;
 use Magento\Catalog\Model\ProductRepository;
-use Magento\Customer\Model\Session;
+use Magento\Customer\Model\SessionFactory;
 use Magento\Framework\App\RequestInterface;
-use Magento\Framework\DataObject;
 use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Framework\View\Element\Block\ArgumentInterface;
 use Magento\Store\Model\StoreManager;
@@ -22,9 +21,9 @@ class CustomerProductFaq implements ArgumentInterface
     protected $request;
 
     /**
-     * @var Session
+     * @var SessionFactory
      */
-    protected $session;
+    protected $customerSessionFactory;
 
     /**
      * @var CollectionFactory
@@ -44,27 +43,27 @@ class CustomerProductFaq implements ArgumentInterface
     /**
      * ProductFaq constructor.
      * @param RequestInterface $request
-     * @param Session $session
+     * @param SessionFactory $customerSessionFactory
      * @param CollectionFactory $productFaqCollectionFactory
      * @param StoreManager $storeManager
      * @param ProductRepository $productRepository
      */
     public function __construct(
         RequestInterface  $request,
-        Session           $session,
+        SessionFactory    $customerSessionFactory,
         CollectionFactory $productFaqCollectionFactory,
         StoreManager      $storeManager,
         ProductRepository $productRepository
     ) {
         $this->request = $request;
-        $this->session = $session;
+        $this->customerSessionFactory = $customerSessionFactory;
         $this->productFaqCollectionFactory = $productFaqCollectionFactory;
         $this->storeManager = $storeManager;
         $this->productRepository = $productRepository;
     }
 
     /**
-     * @return DataObject[]|null
+     * @return ProductFaqInterface[]
      * @throws NoSuchEntityException
      */
     public function getCustomerQuestions(): ?array
@@ -73,7 +72,10 @@ class CustomerProductFaq implements ArgumentInterface
 
         $collection = $this->productFaqCollectionFactory->create();
         $collection->addFieldToFilter(ProductFaqInterface::STORE_ID, $storeId);
-        $collection->addFieldToFilter(ProductFaqInterface::CUSTOMER_ID, $this->session->getCustomerId());
+        $collection->addFieldToFilter(
+            ProductFaqInterface::CUSTOMER_ID,
+            $this->customerSessionFactory->create()->getCustomerId()
+        );
 
         return $collection->getItems();
     }

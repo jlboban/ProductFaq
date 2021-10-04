@@ -98,7 +98,7 @@ class ProductFaq implements ArgumentInterface
     }
 
     /**
-     * @return DataObject[]
+     * @return ProductFaqInterface[]
      * @throws NoSuchEntityException
      */
     public function getProductQuestions(): array

@@ -6,9 +6,9 @@ namespace Inchoo\ProductFaq\Controller\Customer;
 
 use Inchoo\ProductFaq\Model\Config;
 use Magento\Customer\Model\Session;
-use Magento\Customer\Model\Session\Proxy;
 use Magento\Customer\Model\Url as CustomerUrl;
 use Magento\Framework\App\Action\HttpGetActionInterface;
+use Magento\Framework\Controller\Result\ForwardFactory;
 use Magento\Framework\Controller\Result\Redirect;
 use Magento\Framework\Controller\ResultFactory;
 use Magento\Framework\Controller\ResultInterface;
@@ -22,7 +22,7 @@ class Index implements HttpGetActionInterface
     protected $resultFactory;
 
     /**
-     * @var CustomerSession
+     * @var Session
      */
     protected $customerSession;
 
@@ -37,22 +37,30 @@ class Index implements HttpGetActionInterface
     protected $config;
 
     /**
+     * @var ForwardFactory
+     */
+    protected $forwardFactory;
+
+    /**
      * Index constructor.
      * @param ResultFactory $resultFactory
      * @param Session $customerSession
      * @param CustomerUrl $customerUrl
      * @param Config $config
+     * @param ForwardFactory $forwardFactory
      */
     public function __construct(
         ResultFactory $resultFactory,
         Session $customerSession,
         CustomerUrl $customerUrl,
-        Config $config
+        Config $config,
+        ForwardFactory $forwardFactory
     ) {
         $this->resultFactory = $resultFactory;
         $this->customerSession = $customerSession;
         $this->customerUrl = $customerUrl;
         $this->config = $config;
+        $this->forwardFactory = $forwardFactory;
     }
 
     /**
