@@ -7,7 +7,7 @@ namespace Inchoo\ProductFaq\ViewModel;
 use Inchoo\ProductFaq\Api\Data\ProductFaqInterface;
 use Inchoo\ProductFaq\Api\ProductFaqRepositoryInterface;
 use Inchoo\ProductFaq\Model\ResourceModel\ProductFaq\CollectionFactory;
-use Magento\Customer\Model\Session;
+use Magento\Catalog\Api\ProductRepositoryInterface;
 use Magento\Framework\Api\SearchCriteriaBuilder;
 use Magento\Framework\App\Http\Context;
 use Magento\Framework\App\RequestInterface;
@@ -22,11 +22,6 @@ class ProductFaq implements ArgumentInterface
      * @var RequestInterface
      */
     protected $request;
-
-    /**
-     * @var Session
-     */
-    protected $session;
 
     /**
      * @var CollectionFactory
@@ -54,29 +49,36 @@ class ProductFaq implements ArgumentInterface
     protected $httpContext;
 
     /**
+     * @var ProductRepositoryInterface
+     */
+    protected $productRepository;
+
+    /**
      * ProductFaq constructor.
      * @param RequestInterface $request
-     * @param Session $session
      * @param CollectionFactory $productFaqCollectionFactory
      * @param StoreManager $storeManager
      * @param ProductFaqRepositoryInterface $productFaqRepository
+     * @param SearchCriteriaBuilder $searchCriteriaBuilder
+     * @param Context $httpContext
+     * @param ProductRepositoryInterface $productRepository
      */
     public function __construct(
         RequestInterface              $request,
-        Session                       $session,
         CollectionFactory             $productFaqCollectionFactory,
         StoreManager                  $storeManager,
         ProductFaqRepositoryInterface $productFaqRepository,
         SearchCriteriaBuilder         $searchCriteriaBuilder,
-        Context                       $httpContext
+        Context                       $httpContext,
+        ProductRepositoryInterface    $productRepository
     ) {
         $this->request = $request;
-        $this->session = $session;
         $this->productFaqCollectionFactory = $productFaqCollectionFactory;
         $this->storeManager = $storeManager;
         $this->productFaqRepository = $productFaqRepository;
         $this->searchCriteriaBuilder = $searchCriteriaBuilder;
         $this->httpContext = $httpContext;
+        $this->productRepository = $productRepository;
     }
 
     /**
@@ -113,19 +115,5 @@ class ProductFaq implements ArgumentInterface
         $collection->addFieldToFilter(ProductFaqInterface::STORE_ID, $storeId);
 
         return $collection->getItems();
-    }
-
-    /**
-     * @param int $productId
-     * @return bool
-     */
-    public function hasCustomerSubmittedQuestionForProduct(int $productId): bool
-    {
-        $this->searchCriteriaBuilder
-            ->addFilter(ProductFaqInterface::CUSTOMER_ID, $this->session->getCustomerId(), 'eq')
-            ->addFilter(ProductFaqInterface::PRODUCT_ID, $productId, 'eq');
-
-        $searchCriteria = $this->searchCriteriaBuilder->create();
-        return $this->productFaqRepository->getList($searchCriteria)->getTotalCount() > 0;
     }
 }

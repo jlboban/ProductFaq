@@ -31,8 +31,28 @@
         <bookmark name="bookmarks"/>
         <columnsControls name="columns_controls"/>
         <paging name="listing_paging"/>
+        <massaction name="listing_massaction">
+            <action name="delete">
+                <settings>
+                    <confirm>
+                        <message translate="true">Are you sure you want to delete selected items?</message>
+                        <title translate="true">Delete items</title>
+                    </confirm>
+                    <url path="faq/productFaq/massDelete"/>
+                    <type>delete</type>
+                    <label translate="true">Delete</label>
+                </settings>
+            </action>
+        </massaction>
     </listingToolbar>
     <columns name="product_faq_listing_columns">
+        <selectionsColumn name="ids" sortOrder="0">
+            <settings>
+                <indexField>entity_id</indexField>
+                <resizeEnabled>false</resizeEnabled>
+                <resizeDefaultWidth>55</resizeDefaultWidth>
+            </settings>
+        </selectionsColumn>
         <column name="entity_id" sortOrder="5">
             <settings>
                 <filter>textRange</filter>

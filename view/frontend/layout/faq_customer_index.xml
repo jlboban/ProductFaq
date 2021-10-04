@@ -4,12 +4,12 @@
     <update handle="customer_account"/>
     <body>
         <referenceBlock name="page.main.title">
-            <action method="setPageTitle">
+            <action method="setPageTitle" ifconfig="catalog/product_faq/product_faq_active">
                 <argument translate="true" name="title" xsi:type="string">My Product FAQs</argument>
             </action>
         </referenceBlock>
         <referenceContainer name="content">
-            <block name="my_product_faqs" template="Inchoo_ProductFaq::customer/list.phtml">
+            <block name="my_product_faqs" template="Inchoo_ProductFaq::customer/list.phtml" ifconfig="catalog/product_faq/product_faq_active">
                 <arguments>
                     <argument name="customer_product_faq" xsi:type="object">Inchoo\ProductFaq\ViewModel\CustomerProductFaq</argument>
                 </arguments>

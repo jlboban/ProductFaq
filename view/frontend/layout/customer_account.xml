@@ -3,7 +3,7 @@
 <page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
     <body>
         <referenceBlock name="customer_account_navigation">
-            <block class="Magento\Framework\View\Element\Html\Link\Current" name="customer-account-navigation-product-faq">
+            <block class="Magento\Framework\View\Element\Html\Link\Current" name="customer-account-navigation-product-faq" ifconfig="catalog/product_faq/product_faq_active">
                 <arguments>
                     <argument name="path" xsi:type="string">faq/customer/index</argument>
                     <argument name="label" xsi:type="string">My Product FAQs</argument>

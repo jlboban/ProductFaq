@@ -6,7 +6,10 @@ namespace Inchoo\ProductFaq\Model;
 
 use Inchoo\ProductFaq\Api\Data\ProductFaqInterface;
 use Inchoo\ProductFaq\Model\ResourceModel\ProductFaq as ResourceModel;
+use Magento\Catalog\Model\Product;
+use Magento\Framework\App\Area;
 use Magento\Framework\DataObject\IdentityInterface;
+use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\Model\AbstractModel;
 
 class ProductFaq extends AbstractModel implements ProductFaqInterface, IdentityInterface
@@ -42,7 +45,7 @@ class ProductFaq extends AbstractModel implements ProductFaqInterface, IdentityI
      */
     public function getProductId()
     {
-        return $this->_getData(ProductFaqInterface::ENTITY_ID);
+        return $this->_getData(ProductFaqInterface::PRODUCT_ID);
     }
 
     /**
@@ -159,9 +162,30 @@ class ProductFaq extends AbstractModel implements ProductFaqInterface, IdentityI
      * Return unique ID(s) for each object in system
      *
      * @return string[]
+     * @throws LocalizedException
      */
-    public function getIdentities()
+    public function getIdentities(): array
     {
-        // TODO: Implement getIdentities() method.
+        $isUpdated = $this->getOrigData() != $this->getData() && !$this->isObjectNew();
+
+        if ($this->_appState->getAreaCode() == Area::AREA_ADMINHTML && $isUpdated) {
+            return [Product::CACHE_TAG . '_' . $this->getProductId()];
+        }
+
+        return [];
+    }
+
+    /**
+     * Get list of cache tags applied to model object.
+     *
+     * Return false if cache tags are not supported by model
+     *
+     * @return array|bool
+     * @throws LocalizedException
+     */
+    public function getCacheTags()
+    {
+        $identities = $this->getIdentities();
+        return !empty($identities) ? (array) $identities : parent::getCacheTags();
     }
 }

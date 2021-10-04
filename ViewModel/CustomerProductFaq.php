@@ -64,10 +64,10 @@ class CustomerProductFaq implements ArgumentInterface
     }
 
     /**
-     * @return DataObject[]
+     * @return DataObject[]|null
      * @throws NoSuchEntityException
      */
-    public function getCustomerQuestions(): array
+    public function getCustomerQuestions(): ?array
     {
         $storeId = $this->storeManager->getStore()->getId();
 

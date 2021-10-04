@@ -6,8 +6,8 @@
 
 /** @var \Inchoo\ProductFaq\ViewModel\CustomerProductFaq $customerProductFaqViewModel */
 $customerProductFaqViewModel = $block->getData('customer_product_faq');
+$questions = $customerProductFaqViewModel->getCustomerQuestions();
 ?>
-<?php $questions = $customerProductFaqViewModel->getCustomerQuestions() ?>
 <?php if (!empty($questions)) : ?>
     <div class="table-wrapper product-faqs">
         <table class="data table table-reviews" id="my-product-faqs-table">

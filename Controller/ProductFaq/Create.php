@@ -5,9 +5,11 @@ declare(strict_types=1);
 namespace Inchoo\ProductFaq\Controller\ProductFaq;
 
 use Inchoo\ProductFaq\Api\ProductFaqRepositoryInterface;
+use Inchoo\ProductFaq\Model\Config;
 use Inchoo\ProductFaq\Model\ProductFaqFactory;
 use Magento\Catalog\Api\ProductRepositoryInterface;
-use Magento\Customer\Model\Session as CustomerSession;
+use Magento\Customer\Model\Session;
+use Magento\Customer\Model\Session\Proxy;
 use Magento\Customer\Model\Url as CustomerUrl;
 use Magento\Framework\App\Action\HttpPostActionInterface;
 use Magento\Framework\App\RequestInterface;
@@ -73,7 +75,7 @@ class Create implements HttpPostActionInterface
     protected $logger;
 
     /**
-     * @var CustomerSession
+     * @var Session
      */
     protected $customerSession;
 
@@ -88,6 +90,11 @@ class Create implements HttpPostActionInterface
     protected $customerUrl;
 
     /**
+     * @var Config
+     */
+    protected $config;
+
+    /**
      * Create constructor.
      * @param ResultFactory $resultFactory
      * @param ForwardFactory $forwardFactory
@@ -98,8 +105,10 @@ class Create implements HttpPostActionInterface
      * @param StoreManager $storeManager
      * @param ProductRepositoryInterface $productRepository
      * @param LoggerInterface $logger
-     * @param CustomerSession $session
+     * @param Session $customerSession
      * @param EventManager $eventManager
+     * @param CustomerUrl $customerUrl
+     * @param Config $config
      */
     public function __construct(
         ResultFactory $resultFactory,
@@ -111,9 +120,10 @@ class Create implements HttpPostActionInterface
         StoreManager $storeManager,
         ProductRepositoryInterface $productRepository,
         LoggerInterface $logger,
-        CustomerSession $session,
+        Session $customerSession,
         EventManager $eventManager,
-        CustomerUrl $customerUrl
+        CustomerUrl $customerUrl,
+        Config $config
     ) {
         $this->resultFactory = $resultFactory;
         $this->forwardFactory = $forwardFactory;
@@ -124,9 +134,10 @@ class Create implements HttpPostActionInterface
         $this->storeManager = $storeManager;
         $this->productRepository = $productRepository;
         $this->logger = $logger;
-        $this->session = $session;
+        $this->customerSession = $customerSession;
         $this->eventManager = $eventManager;
         $this->customerUrl = $customerUrl;
+        $this->config = $config;
     }
 
     /**
@@ -135,10 +146,14 @@ class Create implements HttpPostActionInterface
      */
     public function execute()
     {
+        if (!$this->config->getProductFaqActive()) {
+            return $this->forwardFactory->create()->forward('noroute');
+        }
+
         /** @var Redirect $resultRedirect */
         $resultRedirect = $this->resultFactory->create(ResultFactory::TYPE_REDIRECT);
 
-        if (!$this->session->authenticate()) {
+        if (!$this->customerSession->authenticate()) {
             $resultRedirect->setPath($this->customerUrl->getLoginUrl());
             return $resultRedirect;
         }
@@ -166,9 +181,9 @@ class Create implements HttpPostActionInterface
         $productFaq->setQuestion($data['question']);
         $productFaq->setProductId($data['product_id']);
         $productFaq->setStoreId($this->storeManager->getStore()->getId());
-        $productFaq->setCustomerId($this->session->getCustomerId());
+        $productFaq->setCustomerId($this->customerSession->getCustomerId());
 
-        $this->eventManager->dispatch('create_productFaq', ['productFaq' => $productFaq]);
+        $this->eventManager->dispatch('create_product_faq', ['productFaq' => $productFaq]);
 
         try {
             $this->productFaqRepository->save($productFaq);

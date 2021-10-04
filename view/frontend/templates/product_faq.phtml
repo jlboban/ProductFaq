@@ -1,14 +1,14 @@
 <?php
-/** @var Magento\Framework\View\Element\Template $block */
+/** @var Inchoo\ProductFaq\Block\ProductFaqBlock $block */
 /** @var Inchoo\ProductFaq\ViewModel\ProductFaq $productFaqViewModel */
 $productFaqViewModel = $block->getData('product_faq');
+$questions = $productFaqViewModel->getProductQuestions();
 ?>
 <div class="block review-list">
     <div class="block-title">
         <strong><?= $block->escapeHtml(__('Frequently Asked Questions')) ?></strong>
     </div>
 </div>
-<?php $questions = $productFaqViewModel->getProductQuestions() ?>
 <?php if ($questions) : ?>
 <ol class="items">
     <?php foreach ($questions as $faq) : ?>
@@ -23,7 +23,7 @@ $productFaqViewModel = $block->getData('product_faq');
 <div class="message info empty"><span><?= $block->escapeHtml(__('There are no submitted questions for this product.')) ?></span></div>
 <?php endif ?>
 <?php $productId = $productFaqViewModel->getProductId(); ?>
-<?php if ($productFaqViewModel->isLoggedIn() && !$productFaqViewModel->hasCustomerSubmittedQuestionForProduct($productId)) : ?>
+<?php if ($productFaqViewModel->isLoggedIn()) : ?>
 <form class="form" action="<?= $block->escapeUrl($block->getUrl('faq/productFaq/create')) ?>" method="post" style="padding-top: 3rem" data-mage-init='{"validation": {}}'>
     <fieldset class="fieldset">
         <legend class="legend">
