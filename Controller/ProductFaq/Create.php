@@ -178,7 +178,7 @@ class Create implements HttpPostActionInterface
         }
 
         $productFaq = $this->productFaqFactory->create();
-        $productFaq->setQuestion($data['question']);
+        $productFaq->setQuestion($question);
         $productFaq->setProductId($data['product_id']);
         $productFaq->setStoreId($this->storeManager->getStore()->getId());
         $productFaq->setCustomerId($this->customerSession->getCustomerId());

@@ -7,6 +7,8 @@ namespace Inchoo\ProductFaq\ViewModel;
 use Inchoo\ProductFaq\Api\Data\ProductFaqInterface;
 use Inchoo\ProductFaq\Model\ResourceModel\ProductFaq\CollectionFactory;
 use Magento\Catalog\Model\ProductRepository;
+use Magento\Customer\Api\Data\CustomerInterface;
+use Magento\Customer\Helper\Session\CurrentCustomer;
 use Magento\Customer\Model\SessionFactory;
 use Magento\Framework\App\RequestInterface;
 use Magento\Framework\Exception\NoSuchEntityException;
@@ -21,9 +23,9 @@ class CustomerProductFaq implements ArgumentInterface
     protected $request;
 
     /**
-     * @var SessionFactory
+     * @var CurrentCustomer
      */
-    protected $customerSessionFactory;
+    protected $currentCustomer;
 
     /**
      * @var CollectionFactory
@@ -43,23 +45,35 @@ class CustomerProductFaq implements ArgumentInterface
     /**
      * ProductFaq constructor.
      * @param RequestInterface $request
-     * @param SessionFactory $customerSessionFactory
+     * @param CurrentCustomer $currentCustomer
      * @param CollectionFactory $productFaqCollectionFactory
      * @param StoreManager $storeManager
      * @param ProductRepository $productRepository
      */
     public function __construct(
         RequestInterface  $request,
-        SessionFactory    $customerSessionFactory,
+        CurrentCustomer $currentCustomer,
         CollectionFactory $productFaqCollectionFactory,
         StoreManager      $storeManager,
         ProductRepository $productRepository
     ) {
         $this->request = $request;
-        $this->customerSessionFactory = $customerSessionFactory;
+        $this->currentCustomer = $currentCustomer;
         $this->productFaqCollectionFactory = $productFaqCollectionFactory;
         $this->storeManager = $storeManager;
         $this->productRepository = $productRepository;
+    }
+
+    /**
+     * @return CustomerInterface|null
+     */
+    public function getCustomer(): ?CustomerInterface
+    {
+        try {
+            return $this->currentCustomer->getCustomer();
+        } catch (NoSuchEntityException $e) {
+            return null;
+        }
     }
 
     /**
@@ -74,7 +88,7 @@ class CustomerProductFaq implements ArgumentInterface
         $collection->addFieldToFilter(ProductFaqInterface::STORE_ID, $storeId);
         $collection->addFieldToFilter(
             ProductFaqInterface::CUSTOMER_ID,
-            $this->customerSessionFactory->create()->getCustomerId()
+            $this->getCustomer()->getId()
         );
 
         return $collection->getItems();
