@@ -1,0 +1,19 @@
+{
+    "inchoo_product_faq": {
+        "column": {
+            "entity_id": true,
+            "product_id": true,
+            "store_id": true,
+            "customer_id": true,
+            "question": true,
+            "answer": true,
+            "is_listed": true,
+            "created_at": true,
+            "updated_at": true
+        },
+        "constraint": {
+            "PRIMARY": true,
+            "INCHOO_PRODUCT_FAQ_PRODUCT_ID_STORE_ID_QUESTION": true
+        }
+    }
+}

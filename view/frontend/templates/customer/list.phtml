@@ -1,0 +1,51 @@
+<?php
+
+/**
+ * @var \Magento\Framework\View\Element\Template $block
+ */
+
+/** @var \Inchoo\ProductFaq\ViewModel\CustomerProductFaq $customerProductFaqViewModel */
+$customerProductFaqViewModel = $block->getData('customer_product_faq');
+$questions = $customerProductFaqViewModel->getCustomerQuestions();
+?>
+<?php if (!empty($questions)) : ?>
+    <div class="table-wrapper product-faqs">
+        <table class="data table table-reviews" id="my-product-faqs-table">
+            <caption class="table-caption"><?= $block->escapeHtml(__('Product FAQs')) ?></caption>
+                <thead>
+                    <tr>
+                        <th scope="col" class="col date"><?= $block->escapeHtml(__('Created')) ?></th>
+                        <th scope="col" class="col"><?= $block->escapeHtml(__('Listed')) ?></th>
+                        <th scope="col" class="col summary"><?= $block->escapeHtml(__('Question')) ?></th>
+                        <th scope="col" class="col summary"><?= $block->escapeHtml(__('Answer')) ?></th>
+                        <th scope="col" class="col summary"><?= $block->escapeHtml(__('Product')) ?></th>
+                    </tr>
+                </thead>
+            <tbody>
+            <?php foreach ($questions as $faq) : ?>
+                <tr>
+                    <td data-th="<?= $block->escapeHtmlAttr(__('Created')) ?>" class="col date">
+                        <?= $block->escapeHtml($faq->getCreatedAt()) ?>
+                    </td>
+                    <td data-th="<?= $block->escapeHtmlAttr(__('Listed')) ?>" class="col">
+                        <?= $block->escapeHtml($faq->getIsListed() ? __('Listed') : __('Unlisted')) ?>
+                    </td>
+                    <td data-th="<?= $block->escapeHtmlAttr(__('Question')) ?>" class="col summary">
+                        <?= $block->escapeHtml($faq->getQuestion()) ?>
+                    </td>
+                    <td data-th="<?= $block->escapeHtmlAttr(__('Answer')) ?>" class="col summary">
+                        <?= $block->escapeHtml($faq->getAnswer()) ?>
+                    </td>
+                    <td data-th="<?= $block->escapeHtmlAttr(__('Product URL')) ?>" class="col summary">
+                        <a href="<?= $block->escapeUrl($customerProductFaqViewModel->getProductUrl($faq->getProductId())) ?>">
+                            <?= $block->escapeHtml($customerProductFaqViewModel->getProductName($faq->getProductId())) ?>
+                        </a>
+                    </td>
+                </tr>
+            <?php endforeach; ?>
+            </tbody>
+        </table>
+    </div>
+<?php else : ?>
+    <div class="message info empty"><span><?= $block->escapeHtml(__('You have submitted no product FAQs.')) ?></span></div>
+<?php endif; ?>

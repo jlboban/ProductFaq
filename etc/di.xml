@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <preference for="Inchoo\ProductFaq\Api\Data\ProductFaqSearchResultInterface" type="Inchoo\ProductFaq\Model\ProductFaqSearchResult"/>
+    <preference for="Inchoo\ProductFaq\Api\ProductFaqRepositoryInterface" type="Inchoo\ProductFaq\Model\ProductFaqRepository"/>
+    <preference for="Inchoo\ProductFaq\Api\Data\ProductFaqInterface" type="Inchoo\ProductFaq\Model\ProductFaq"/>
+    <type name="Inchoo\ProductFaq\Controller\ProductFaq\Create">
+        <arguments>
+            <argument name="customerSession" xsi:type="object">Magento\Customer\Model\Session\Proxy</argument>
+        </arguments>
+    </type>
+    <type name="Inchoo\ProductFaq\Controller\Customer\Index">
+        <arguments>
+            <argument name="customerSession" xsi:type="object">Magento\Customer\Model\Session\Proxy</argument>
+        </arguments>
+    </type>
+</config>

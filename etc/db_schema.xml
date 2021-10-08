@@ -1,0 +1,25 @@
+<?xml version="1.0"?>
+
+<schema xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Setup/Declaration/Schema/etc/schema.xsd">
+    <table name="inchoo_product_faq" resource="default" engine="innodb" comment="Frequently asked product questions table">
+        <column xsi:type="int" name="entity_id" padding="10" unsigned="true" nullable="false" identity="true" comment="Entity ID"/>
+        <column xsi:type="int" name="product_id" nullable="false" comment="Product ID"/>
+        <column xsi:type="int" name="store_id" nullable="false" comment="Store ID"/>
+        <column xsi:type="int" name="customer_id" nullable="false" comment="Customer ID"/>
+        <column xsi:type="varchar" name="question" nullable="false" length="255" comment="Question"/>
+        <column xsi:type="mediumtext" name="answer" nullable="true" comment="Answer"/>
+        <column xsi:type="boolean" name="is_listed" nullable="false" default="0" comment="Display on frontend flag"/>
+        <column xsi:type="timestamp" name="created_at" on_update="false" nullable="false" default="CURRENT_TIMESTAMP"
+                comment="Created at"/>
+        <column xsi:type="timestamp" name="updated_at" on_update="true" nullable="false" default="CURRENT_TIMESTAMP"
+                comment="Updated at"/>
+        <constraint xsi:type="primary" referenceId="PRIMARY">
+            <column name="entity_id"/>
+        </constraint>
+        <constraint xsi:type="unique" referenceId="INCHOO_PRODUCT_FAQ_PRODUCT_ID_STORE_ID_QUESTION">
+            <column name="product_id"/>
+            <column name="store_id"/>
+            <column name="question"/>
+        </constraint>
+    </table>
+</schema>

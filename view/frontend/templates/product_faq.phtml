@@ -1,0 +1,50 @@
+<?php
+/** @var Inchoo\ProductFaq\Block\ProductFaqBlock $block */
+/** @var Inchoo\ProductFaq\ViewModel\ProductFaq $productFaqViewModel */
+$productFaqViewModel = $block->getData('product_faq');
+$questions = $productFaqViewModel->getProductQuestions();
+?>
+<div class="block review-list">
+    <div class="block-title">
+        <strong><?= $block->escapeHtml(__('Frequently Asked Questions')) ?></strong>
+    </div>
+</div>
+<?php if ($questions) : ?>
+<ol class="items">
+    <?php foreach ($questions as $faq) : ?>
+    <li class="item">
+        <h3><?= $block->escapeHtml(__('Question: ') . $faq->getQuestion()) ?></h3>
+        <p style="padding-left: 1rem"><?= $block->escapeHtml(__('Answer: ') . $faq->getAnswer()) ?></p>
+    </li>
+    <hr>
+    <?php endforeach ?>
+</ol>
+<?php else : ?>
+<div class="message info empty"><span><?= $block->escapeHtml(__('There are no submitted questions for this product.')) ?></span></div>
+<?php endif ?>
+<?php $productId = $productFaqViewModel->getProductId(); ?>
+<?php if ($productFaqViewModel->isLoggedIn()) : ?>
+<form class="form" action="<?= $block->escapeUrl($block->getUrl('faq/productFaq/create')) ?>" method="post" style="padding-top: 3rem" data-mage-init='{"validation": {}}'>
+    <fieldset class="fieldset">
+        <legend class="legend">
+            <span><?= $block->escapeHtml(__('Submit a question')) ?></span>
+        </legend>
+        <div class="field required">
+            <label for="question" class="label">
+                <span><?= $block->escapeHtml(__('Question')) ?></span>
+            </label>
+            <div class="control">
+                <input type="text" id="question" name="question" class="input-text" data-validate='{"required":true, "minlength":16}'>
+            </div>
+        </div>
+        <input type="hidden" name="product_id" value="<?= $block->escapeHtml($productFaqViewModel->getProductId()) ?>"/>
+    </fieldset>
+    <div class="actions-toolbar">
+        <div class="primary">
+            <button type="submit" class="action submit primary" title="<?= $block->escapeHtml(__('Submit')) ?>">
+                <span><?= $block->escapeHtml(__('Submit Question')) ?></span>
+            </button>
+        </div>
+    </div>
+</form>
+<?php endif ?>
